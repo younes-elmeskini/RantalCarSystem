@@ -1,7 +1,8 @@
 import prisma from "@/lib/prisma";
 import { cookies } from "next/headers";
 import jwt from "jsonwebtoken";
-import { v2 as cloudinary } from "cloudinary";
+import { writeFile, mkdir } from "fs/promises";
+import path from "path";
 import {
   Brand,
   FuelType,
@@ -11,9 +12,6 @@ import {
 } from "@prisma/client";
 
 export const runtime = "nodejs";
-
-// Do not configure Cloudinary at module load; configure lazily inside POST to avoid
-// failing GET requests in environments without Cloudinary env vars.
 
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
@@ -150,22 +148,6 @@ export async function POST(req: Request) {
       return Response.json({ error: "Invalid token" }, { status: 401 });
     }
 
-    if (
-      !process.env.CLOUDINARY_CLOUD_NAME ||
-      !process.env.CLOUDINARY_API_KEY ||
-      !process.env.CLOUDINARY_API_SECRET
-    ) {
-      return Response.json(
-        { error: "Cloudinary is not configured" },
-        { status: 500 }
-      );
-    }
-    cloudinary.config({
-      cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-      api_key: process.env.CLOUDINARY_API_KEY,
-      api_secret: process.env.CLOUDINARY_API_SECRET,
-    });
-
     const formData = await req.formData();
     const name = formData.get("name") as string;
     const cover = formData.get("cover") as File;
@@ -180,24 +162,31 @@ export async function POST(req: Request) {
     const quantity = parseInt(formData.get("quantity") as string);
     const airConditioning = formData.get("airConditioning") === "true";
 
+    // Save image locally
+    const publicDir = path.join(process.cwd(), "public");
+    const carsDir = path.join(publicDir, "cars");
+    await mkdir(carsDir, { recursive: true });
+
+    // Generate unique filename
+    const timestamp = Date.now();
+    const originalName = cover.name;
+    const extension = path.extname(originalName);
+    const baseName = path.basename(originalName, extension);
+    const uniqueFileName = `${baseName}_${timestamp}${extension}`;
+    const filePath = path.join(carsDir, uniqueFileName);
+
+    // Convert file to buffer and save
     const arrayBuffer = await cover.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
-    type CloudinaryUploadResult = { secure_url: string };
-    const uploadResult = await new Promise<CloudinaryUploadResult>(
-      (resolve, reject) => {
-        cloudinary.uploader
-          .upload_stream({ folder: "cars" }, (error, result) => {
-            if (error) reject(error);
-            else resolve(result as CloudinaryUploadResult);
-          })
-          .end(buffer);
-      }
-    );
+    await writeFile(filePath, buffer);
+
+    // Save relative path for database
+    const coverPath = `/cars/${uniqueFileName}`;
 
     const newCar = await prisma.car.create({
       data: {
         name,
-        cover: uploadResult.secure_url,
+        cover: coverPath,
         type,
         price,
         gamme,
@@ -212,7 +201,7 @@ export async function POST(req: Request) {
     });
 
     return Response.json(
-      { 
+      {
         message: "Voiture créée avec succès",
         id: newCar.id,
         cover: newCar.cover
@@ -220,10 +209,10 @@ export async function POST(req: Request) {
       { status: 201 }
     );
   } catch (error: unknown) {
-    console.error("Fetch error on Vercel:", error);
+    console.error("Error creating car:", error);
     const message = error instanceof Error ? error.message : String(error);
     return Response.json(
-      { error: "Failed to fetch cars", details: message },
+      { error: "Failed to create car", details: message },
       { status: 500 }
     );
   }
