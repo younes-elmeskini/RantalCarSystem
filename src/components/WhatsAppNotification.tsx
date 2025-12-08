@@ -26,7 +26,7 @@ export default function WhatsAppNotification({
           }
           return prev - 2;
         });
-      }, 50);
+      }, 100);
 
       return () => clearInterval(timer);
     }

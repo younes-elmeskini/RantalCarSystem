@@ -37,9 +37,6 @@ export async function GET(req: Request) {
     transmission: searchParams.get("transmission"),
     limit: searchParams.get("limit"),
   };
-
-  // Helper to check if a value is a valid enum
-  // Helper to check if a value is a valid enum
   const isValidEnumValue = <T extends object>(
     enumObj: T,
     value: unknown
