@@ -1,8 +1,7 @@
 import prisma from "@/lib/prisma";
 import { cookies } from "next/headers";
 import jwt from "jsonwebtoken";
-import { writeFile, mkdir } from "fs/promises";
-import path from "path";
+import { put as putBlob, del as deleteBlob } from "@vercel/blob";
 import {
   Brand,
   FuelType,
@@ -162,31 +161,25 @@ export async function POST(req: Request) {
     const quantity = parseInt(formData.get("quantity") as string);
     const airConditioning = formData.get("airConditioning") === "true";
 
-    // Save image locally
-    const publicDir = path.join(process.cwd(), "public");
-    const carsDir = path.join(publicDir, "cars");
-    await mkdir(carsDir, { recursive: true });
-
-    // Generate unique filename
+    // Upload image to Vercel Blob Storage
     const timestamp = Date.now();
     const originalName = cover.name;
-    const extension = path.extname(originalName);
-    const baseName = path.basename(originalName, extension);
-    const uniqueFileName = `${baseName}_${timestamp}${extension}`;
-    const filePath = path.join(carsDir, uniqueFileName);
+    const extension = originalName.split('.').pop() || '';
+    const baseName = originalName.replace(/\.[^/.]+$/, "");
+    const uniqueFileName = `cars/${baseName}_${timestamp}.${extension}`;
 
-    // Convert file to buffer and save
-    const arrayBuffer = await cover.arrayBuffer();
-    const buffer = Buffer.from(arrayBuffer);
-    await writeFile(filePath, buffer);
+    // Upload to Blob Storage
+    const blob = await putBlob(uniqueFileName, cover, {
+      access: 'public',
+    });
 
-    // Save relative path for database
-    const coverPath = `/cars/${uniqueFileName}`;
+    // Save blob URL for database
+    const coverUrl = blob.url;
 
     const newCar = await prisma.car.create({
       data: {
         name,
-        cover: coverPath,
+        cover: coverUrl,
         type,
         price,
         gamme,

@@ -1,8 +1,7 @@
 import prisma from "@/lib/prisma";
 import { cookies } from "next/headers";
 import jwt from "jsonwebtoken";
-import { writeFile, mkdir, unlink } from "fs/promises";
-import path from "path";
+import { put as putBlob, del as deleteBlob } from "@vercel/blob";
 import {
   Brand,
   FuelType,
@@ -65,12 +64,11 @@ export async function DELETE(req: NextRequest, context: { params: Promise<{ id: 
       return Response.json({ error: "Voiture non trouvée" }, { status: 404 });
     }
 
-    // Supprimer l'image associée si elle existe et n'est pas une URL Cloudinary
-    if (car.cover && car.cover.startsWith('/cars/')) {
+    // Supprimer l'image associée depuis Vercel Blob Storage
+    if (car.cover && car.cover.includes('blob.vercel-storage.com')) {
       try {
-        const imagePath = path.join(process.cwd(), 'public', car.cover);
-        await unlink(imagePath);
-        console.log(`Image supprimée: ${imagePath}`);
+        await deleteBlob(car.cover);
+        console.log(`Image supprimée depuis Blob Storage: ${car.cover}`);
       } catch (fileError) {
         console.warn('Erreur lors de la suppression du fichier image:', fileError);
         // Ne pas échouer l'opération si la suppression du fichier échoue
@@ -125,38 +123,31 @@ export async function PATCH(req: NextRequest, context: { params: Promise<{ id: s
 
   let coverUrl: string | undefined;
 
-  // 🔹 If a new image is provided, save locally
+  // 🔹 If a new image is provided, upload to Vercel Blob Storage
   if (cover) {
     // Récupérer la voiture actuelle pour connaître l'ancienne image
     const currentCar = await prisma.car.findUnique({ where: { id } });
 
-    // Save image locally
-    const publicDir = path.join(process.cwd(), "public");
-    const carsDir = path.join(publicDir, "cars");
-    await mkdir(carsDir, { recursive: true });
-
-    // Generate unique filename
+    // Upload image to Vercel Blob Storage
     const timestamp = Date.now();
     const originalName = cover.name;
-    const extension = path.extname(originalName);
-    const baseName = path.basename(originalName, extension);
-    const uniqueFileName = `${baseName}_${timestamp}${extension}`;
-    const filePath = path.join(carsDir, uniqueFileName);
+    const extension = originalName.split('.').pop() || '';
+    const baseName = originalName.replace(/\.[^/.]+$/, "");
+    const uniqueFileName = `cars/${baseName}_${timestamp}.${extension}`;
 
-    // Convert file to buffer and save
-    const arrayBuffer = await cover.arrayBuffer();
-    const buffer = Buffer.from(arrayBuffer);
-    await writeFile(filePath, buffer);
+    // Upload to Blob Storage
+    const blob = await putBlob(uniqueFileName, cover, {
+      access: 'public',
+    });
 
-    // Save relative path for database
-    coverUrl = `/cars/${uniqueFileName}`;
+    // Save blob URL for database
+    coverUrl = blob.url;
 
-    // Supprimer l'ancienne image si elle existe et est stockée localement
-    if (currentCar?.cover && currentCar.cover.startsWith('/cars/')) {
+    // Supprimer l'ancienne image depuis Vercel Blob Storage
+    if (currentCar?.cover && currentCar.cover.includes('blob.vercel-storage.com')) {
       try {
-        const oldImagePath = path.join(process.cwd(), 'public', currentCar.cover);
-        await unlink(oldImagePath);
-        console.log(`Ancienne image supprimée: ${oldImagePath}`);
+        await deleteBlob(currentCar.cover);
+        console.log(`Ancienne image supprimée depuis Blob Storage: ${currentCar.cover}`);
       } catch (fileError) {
         console.warn('Erreur lors de la suppression de l\'ancienne image:', fileError);
         // Ne pas échouer l'opération si la suppression de l'ancienne image échoue
