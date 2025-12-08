@@ -1,7 +1,8 @@
 import prisma from "@/lib/prisma";
-import { v2 as cloudinary } from "cloudinary";
 import { cookies } from "next/headers";
 import jwt from "jsonwebtoken";
+import { writeFile, mkdir, unlink } from "fs/promises";
+import path from "path";
 import {
   Brand,
   FuelType,
@@ -11,14 +12,6 @@ import {
   Car,
 } from "@prisma/client";
 import { NextRequest } from "next/server";
-
-interface CloudinaryUploadResult {
-  secure_url: string;
-  public_id: string;
-  format?: string;
-  width?: number;
-  height?: number;
-}
 
 
 export async function GET(req: NextRequest, context: { params: Promise<{ id: string }> }) {
@@ -38,6 +31,8 @@ export async function GET(req: NextRequest, context: { params: Promise<{ id: str
       transmission: true,
       fuelType: true,
       airConditioning: true,
+      brand: true,
+      gamme: true,
     },
   });
 
@@ -70,8 +65,20 @@ export async function DELETE(req: NextRequest, context: { params: Promise<{ id: 
       return Response.json({ error: "Voiture non trouvée" }, { status: 404 });
     }
 
+    // Supprimer l'image associée si elle existe et n'est pas une URL Cloudinary
+    if (car.cover && car.cover.startsWith('/cars/')) {
+      try {
+        const imagePath = path.join(process.cwd(), 'public', car.cover);
+        await unlink(imagePath);
+        console.log(`Image supprimée: ${imagePath}`);
+      } catch (fileError) {
+        console.warn('Erreur lors de la suppression du fichier image:', fileError);
+        // Ne pas échouer l'opération si la suppression du fichier échoue
+      }
+    }
+
     await prisma.car.delete({ where: { id } });
-    
+
     return Response.json(
       { message: "Voiture supprimée avec succès" },
       { status: 200 }
@@ -84,12 +91,6 @@ export async function DELETE(req: NextRequest, context: { params: Promise<{ id: 
     );
   }
 }
-
-cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME!,
-  api_key: process.env.CLOUDINARY_API_KEY!,
-  api_secret: process.env.CLOUDINARY_API_SECRET!,
-});
 
 export async function PATCH(req: NextRequest, context: { params: Promise<{ id: string }> }) {
   const { id } = await context.params;
@@ -124,23 +125,43 @@ export async function PATCH(req: NextRequest, context: { params: Promise<{ id: s
 
   let coverUrl: string | undefined;
 
-  // 🔹 If a new image is provided, upload to Cloudinary
+  // 🔹 If a new image is provided, save locally
   if (cover) {
+    // Récupérer la voiture actuelle pour connaître l'ancienne image
+    const currentCar = await prisma.car.findUnique({ where: { id } });
+
+    // Save image locally
+    const publicDir = path.join(process.cwd(), "public");
+    const carsDir = path.join(publicDir, "cars");
+    await mkdir(carsDir, { recursive: true });
+
+    // Generate unique filename
+    const timestamp = Date.now();
+    const originalName = cover.name;
+    const extension = path.extname(originalName);
+    const baseName = path.basename(originalName, extension);
+    const uniqueFileName = `${baseName}_${timestamp}${extension}`;
+    const filePath = path.join(carsDir, uniqueFileName);
+
+    // Convert file to buffer and save
     const arrayBuffer = await cover.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
-    const uploadResult: CloudinaryUploadResult = await new Promise(
-      (resolve, reject) => {
-        cloudinary.uploader.upload_stream(
-          { folder: "cars" },
-          (error, result) => {
-            if (error) reject(error);
-            else resolve(result as CloudinaryUploadResult);
-          }
-        ).end(buffer);
-      }
-    );
+    await writeFile(filePath, buffer);
 
-    coverUrl = uploadResult.secure_url;
+    // Save relative path for database
+    coverUrl = `/cars/${uniqueFileName}`;
+
+    // Supprimer l'ancienne image si elle existe et est stockée localement
+    if (currentCar?.cover && currentCar.cover.startsWith('/cars/')) {
+      try {
+        const oldImagePath = path.join(process.cwd(), 'public', currentCar.cover);
+        await unlink(oldImagePath);
+        console.log(`Ancienne image supprimée: ${oldImagePath}`);
+      } catch (fileError) {
+        console.warn('Erreur lors de la suppression de l\'ancienne image:', fileError);
+        // Ne pas échouer l'opération si la suppression de l'ancienne image échoue
+      }
+    }
   }
 
   try {
