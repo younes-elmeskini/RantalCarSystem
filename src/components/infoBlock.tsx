@@ -18,18 +18,18 @@ export default function infoBlock() {
           >
             <Image
               src="/icons/map.png"
-              alt="Availability"
+              alt="Disponibilité location voiture Casablanca Maroc"
               width={64}
               height={64}
               className="w-[56px] h-[56px] md:w-[64px] md:h-[64px]"
             />
           </motion.div>
           <h3 className="font-bold text-[16px] md:text-[20px] mt-4 mb-2">
-            Availability
+            Disponibilité
           </h3>
           <p className="text-[14px] md:text-[16px] text-black60">
-          Check real-time car availability and book instantly.
-          Flexible dates, transparent pricing, no surprises.
+          Vérifiez la disponibilité en temps réel et réservez instantanément.
+          Dates flexibles, tarifs transparents, sans surprise.
           </p>
         </motion.div>
       </StaggeredItem>
@@ -47,18 +47,18 @@ export default function infoBlock() {
           >
             <Image
               src="/icons/comfort.png"
-              alt="Comfort"
+              alt="Confort location voiture Maroc"
               width={64}
               height={64}
               className="w-[56px] h-[56px] md:w-[64px] md:h-[64px]"
             />
           </motion.div>
           <h3 className="font-bold text-[16px] md:text-[20px] mt-4 mb-2">
-            Comfort
+            Confort
           </h3>
           <p className="text-[14px] md:text-[16px] text-black60">
-          Enjoy smooth, relaxing rides with well-maintained and fully equipped cars.
-          Every journey is designed for your comfort.
+          Profitez de trajets agréables et relaxants avec des voitures bien entretenues et entièrement équipées.
+          Chaque voyage est conçu pour votre confort.
           </p>
         </motion.div>
       </StaggeredItem>
@@ -76,18 +76,18 @@ export default function infoBlock() {
           >
             <Image
               src="/icons/saving.png"
-              alt="Savings"
+              alt="Économies location voiture Casablanca"
               width={64}
               height={64}
               className="w-[56px] h-[56px] md:w-[64px] md:h-[64px]"
             />
           </motion.div>
           <h3 className="font-bold text-[16px] md:text-[20px] mt-4 mb-2">
-            Savings
+            Économies
           </h3>
           <p className="text-[14px] md:text-[16px] text-black60">
-          Get the best value for your money.
-          Affordable rates, transparent pricing, maximum savings.
+          Obtenez le meilleur rapport qualité-prix.
+          Tarifs abordables, prix transparents, économies maximales.
           </p>
         </motion.div>
       </StaggeredItem>

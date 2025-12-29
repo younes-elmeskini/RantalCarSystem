@@ -37,13 +37,13 @@ export default function Home() {
         viewport={{ once: true }}
       >
         <h2 className="text-[20px] sm:text-[24px] md:text-[32px] lg:text-[38px] font-bold leading-tight">
-          Choose the car that suits you
+          Choisissez la voiture qui vous convient
         </h2>
         <Link
           href="/cars"
           className="text-blue-600 hover:text-blue-800 font-medium hidden md:block text-sm sm:text-base transition-colors duration-200 whitespace-nowrap"
         >
-          View All →
+          Voir tout →
         </Link>
       </motion.div>
       <motion.div
@@ -69,7 +69,7 @@ export default function Home() {
             href="/cars"
             className="relative text-blue-600 text-center font-medium md:hidden text-sm sm:text-base w-full transition-colors duration-300 after:content-[''] after:absolute after:left-1/2 after:-translate-x-1/2 after:bottom-0 after:w-0 after:h-[2px] after:bg-blue-600 hover:after:w-1/2 after:transition-all after:duration-300"
           >
-            View All →
+            Voir tout →
           </Link>
         </motion.div>
       </div>

@@ -316,7 +316,7 @@ export default function AboutPage() {
                     <div>
                       <h4 className="font-semibold text-gray-900">Contact</h4>
                       <p className="text-gray-600">+212 708 015 107</p>
-                      <p className="text-gray-600">contact@carrental.ma</p>
+                      <p className="text-gray-600">contact@ecodidacar.ma</p>
                     </div>
                   </div>
                 </div>

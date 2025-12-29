@@ -45,12 +45,12 @@ function CarsPageContent() {
   return (
     <div className="flex flex-col justify-center items-center">
       <motion.h2 
-        className="text-[24px] font-bold md:my-4"
+        className="text-[24px] font-bold md:my-4 text-center"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
       >
-        Select a vehicle group
+        Sélectionnez un groupe de véhicules
       </motion.h2>
         <FilterType
           selectedGamme={gamme}

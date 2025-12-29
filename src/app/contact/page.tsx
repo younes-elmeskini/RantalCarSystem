@@ -287,7 +287,7 @@ Message envoyé depuis le site web de location de voitures.`;
                   </div>
                   <div>
                     <h4 className="font-semibold text-gray-900">Email</h4>
-                    <p className="text-gray-600">contact@carrental.ma</p>
+                    <p className="text-gray-600">contact@ecodidacar.ma</p>
                     <p className="text-sm text-gray-500">Réponse sous 24h</p>
                   </div>
                 </motion.div>

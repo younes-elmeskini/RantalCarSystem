@@ -15,7 +15,7 @@ export default function heroFilter() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.5 }}
           >
-            Experience the road like never before
+            Location de Voitures à Casablanca, Maroc
           </motion.h1>
           <motion.p
             className="md:text-[16px] text-[12px] max-w-[460px]"
@@ -23,8 +23,8 @@ export default function heroFilter() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.7 }}
           >
-            Discover reliable, comfortable cars designed to fit every journey.
-            From city drives to long trips, we make mobility simple and accessible.
+            Découvrez notre large gamme de véhicules de location à Casablanca et dans tout le Maroc.
+            Des voitures fiables et confortables pour tous vos déplacements. Réservez en ligne facilement.
           </motion.p>
           <motion.button
             className="px-4 py-2 md:px-6 md:py-3 bg-[#FF9E0C] text-white rounded-[12px] hover:bg-[#7c5dfa] transition-colors duration-300"
@@ -34,14 +34,14 @@ export default function heroFilter() {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
-            <Link href="/cars">View all cars</Link>
+            <Link href="/cars">Voir toutes les voitures</Link>
           </motion.button>
         </div>
       </SectionAnimation>
       <SectionAnimation direction="right" delay={0.4}>
         <div className="bg-white p-[20px] md:p-[40px] rounded-[16px] w-[200px]] md:w-[500px]">
           <h2 className="md:text-[24px] text-[18px] font-bold mb-4 text-center">
-            Book your car
+            Réservez votre voiture
           </h2>
           <CarFilterForm />
         </div>

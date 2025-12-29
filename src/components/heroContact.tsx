@@ -15,7 +15,7 @@ export default function HeroContact() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.5 }}
             >
-              Contact Us
+              Contactez-nous
             </motion.h1>
             <motion.p
               className="text-[14px] md:text-[18px] text-gray-100 leading-relaxed"
@@ -23,8 +23,8 @@ export default function HeroContact() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.7 }}
             >
-              We’re here to help you with all your car rental needs. Get in
-              touch for more information or support.
+              Nous sommes là pour vous aider avec tous vos besoins de location de voiture à Casablanca et au Maroc.
+              Contactez-nous pour plus d'informations ou de support.
             </motion.p>
           </SectionAnimation>
           <motion.div
@@ -34,7 +34,7 @@ export default function HeroContact() {
           >
             <Link href="/contact">
               <button className="px-6 py-3 bg-[#FF9E0C] rounded-[12px] font-semibold hover:bg-[#7c5dfa] transition-all duration-300 transform hover:scale-105 shadow-md">
-                Contact Us
+                Nous contacter
               </button>
             </Link>
           </motion.div>
