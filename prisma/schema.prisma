@@ -40,85 +40,84 @@ enum PriceRange {
 }
 
 enum Brand {
-  Audi
-  BMW
-  Mercedes
-  Volkswagen
-  Porsche
-  Opel
-  Smart
-  Maybach
-  Alpina
-  Borgward
-  Ford
-  Chevrolet
-  Cadillac
-  Tesla
-  Chrysler
-  Dodge
-  Jeep
-  Ram
-  GMC
-  Lincoln
-  Toyota
-  Honda
-  Nissan
-  Mazda
-  Mitsubishi
-  Subaru
-  Suzuki
-  Lexus
-  Infiniti
   Acura
-  Daihatsu
-  Hyundai
-  Kia
-  Genesis
-  SsangYong
-  Renault
-  Peugeot
-  Citroen
-  DS
-  Alpine
-  Fiat
   AlfaRomeo
-  Lancia
-  Maserati
-  Ferrari
-  Lamborghini
-  Pagani
-  Bugatti
+  Alpina
+  Alpine
   AstonMartin
+  Audi
   Bentley
-  RollsRoyce
-  LandRover
-  RangeRover
-  Jaguar
-  Mini
-  McLaren
-  Lotus
-  Volvo
-  Koenigsegg
-  Saab
-  Dacia
-  Skoda
-  Seat
-  Cupra
-  Tata
-  Mahindra
+  BMW
+  Borgward
+  Bugatti
   BYD
-  NIO
-  Xpeng
+  Cadillac
+  Changan
+  Chevrolet
+  Chrysler
+  Citroen
+  Cupra
+  Dacia
+  Daihatsu
+  Dodge
+  DS
+  Ferrari
+  Fiat
+  Ford
+  GMC
   Geely
+  Genesis
   GreatWall
   Haval
-  Changan
+  Honda
   Hongqi
-  MG
-  Rivian
+  Hyundai
+  Infiniti
+  Jaguar
+  Jeep
+  Kia
+  Koenigsegg
+  Lamborghini
+  LandRover
+  Lancia
+  Lexus
+  Lincoln
+  Lotus
   Lucid
+  Maserati
+  Maybach
+  Mazda
+  McLaren
+  Mercedes
+  MG
+  Mini
+  Mitsubishi
+  Nissan
+  NIO
+  Opel
+  Pagani
+  Peugeot
   Polestar
+  Porsche
+  Ram
+  RangeRover
+  Renault
   Rimac
+  Rivian
+  RollsRoyce
+  Saab
+  Seat
+  Skoda
+  Smart
+  SsangYong
+  Subaru
+  Suzuki
+  Tata
+  Tesla
+  Toyota
+  Volkswagen
+  Volvo
+  Xpeng
 }
 
 model User {
