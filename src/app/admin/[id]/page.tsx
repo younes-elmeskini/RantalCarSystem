@@ -65,6 +65,15 @@ export default function EditCarForm() {
     };
   }, [router]);
 
+  // Nettoyer les URLs de preview pour éviter les fuites mémoire
+  useEffect(() => {
+    return () => {
+      if (preview && preview.startsWith('blob:')) {
+        URL.revokeObjectURL(preview);
+      }
+    };
+  }, [preview]);
+
   // Fetch car data
   useEffect(() => {
     if (!carId) {
@@ -142,8 +151,23 @@ export default function EditCarForm() {
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
+      // Nettoyer l'ancienne preview si c'est un blob URL
+      if (preview && preview.startsWith('blob:')) {
+        URL.revokeObjectURL(preview);
+      }
+      // Vérifier que c'est une image
+      if (!file.type.startsWith('image/')) {
+        setMessage("Veuillez sélectionner un fichier image");
+        return;
+      }
+      // Vérifier la taille (max 10MB)
+      if (file.size > 10 * 1024 * 1024) {
+        setMessage("L'image ne doit pas dépasser 10MB");
+        return;
+      }
       setCover(file);
       setPreview(URL.createObjectURL(file));
+      setMessage(""); // Réinitialiser le message d'erreur
     }
   };
 

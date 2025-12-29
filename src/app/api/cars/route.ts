@@ -131,6 +131,17 @@ export async function POST(req: Request) {
     );
   }
 
+  // Vérifier la configuration Blob Storage
+  if (!process.env.BLOB_READ_WRITE_TOKEN) {
+    return Response.json(
+      {
+        error: "Blob Storage not configured",
+        message: "BLOB_READ_WRITE_TOKEN est manquant. Configurez-le dans les variables d'environnement Vercel.",
+      },
+      { status: 500 }
+    );
+  }
+
   try {
     const token = (await cookies()).get("token")?.value;
     if (!token)
@@ -149,32 +160,132 @@ export async function POST(req: Request) {
 
     const formData = await req.formData();
     const name = formData.get("name") as string;
-    const cover = formData.get("cover") as File;
+    const cover = formData.get("cover") as File | null;
     const price = formData.get("price") as string;
     const brand = formData.get("brand") as Brand;
     const gamme = formData.get("gamme") as PriceRange;
     const fuelType = formData.get("fuelType") as FuelType;
     const transmission = formData.get("transmission") as Transmission;
     const type = formData.get("type") as CarType;
-    const seats = parseInt(formData.get("seats") as string);
-    const dors = parseInt(formData.get("dors") as string);
-    const quantity = parseInt(formData.get("quantity") as string);
+    const seatsStr = formData.get("seats") as string;
+    const dorsStr = formData.get("dors") as string;
+    const quantityStr = formData.get("quantity") as string;
     const airConditioning = formData.get("airConditioning") === "true";
+
+    // Validation des données
+    if (!name || !price || !type || !brand || !gamme) {
+      return Response.json(
+        { error: "Données manquantes", message: "Tous les champs requis doivent être remplis" },
+        { status: 400 }
+      );
+    }
+
+    // Validation des valeurs numériques
+    const seats = parseInt(seatsStr, 10);
+    const dors = parseInt(dorsStr, 10);
+    const quantity = parseInt(quantityStr, 10);
+
+    if (isNaN(seats) || seats < 1 || seats > 20) {
+      return Response.json(
+        { error: "Valeur invalide", message: "Le nombre de sièges doit être entre 1 et 20" },
+        { status: 400 }
+      );
+    }
+
+    if (isNaN(dors) || dors < 2 || dors > 10) {
+      return Response.json(
+        { error: "Valeur invalide", message: "Le nombre de portes doit être entre 2 et 10" },
+        { status: 400 }
+      );
+    }
+
+    if (isNaN(quantity) || quantity < 0) {
+      return Response.json(
+        { error: "Valeur invalide", message: "La quantité doit être un nombre positif" },
+        { status: 400 }
+      );
+    }
+
+    // Validation des enums
+    if (!Object.values(Brand).includes(brand)) {
+      return Response.json(
+        { error: "Valeur invalide", message: "La marque sélectionnée n'est pas valide" },
+        { status: 400 }
+      );
+    }
+
+    if (!Object.values(PriceRange).includes(gamme)) {
+      return Response.json(
+        { error: "Valeur invalide", message: "La gamme sélectionnée n'est pas valide" },
+        { status: 400 }
+      );
+    }
+
+    if (!Object.values(CarType).includes(type)) {
+      return Response.json(
+        { error: "Valeur invalide", message: "Le type de voiture sélectionné n'est pas valide" },
+        { status: 400 }
+      );
+    }
+
+    // Validation de l'image
+    if (!cover || !(cover instanceof File)) {
+      return Response.json(
+        { error: "Image manquante", message: "Une image de couverture est requise" },
+        { status: 400 }
+      );
+    }
+
+    // Vérifier que c'est bien une image
+    if (!cover.type.startsWith('image/')) {
+      return Response.json(
+        { error: "Type de fichier invalide", message: "Le fichier doit être une image" },
+        { status: 400 }
+      );
+    }
+
+    // Vérifier la taille du fichier (max 10MB)
+    const maxSize = 10 * 1024 * 1024; // 10MB
+    if (cover.size > maxSize) {
+      return Response.json(
+        { error: "Fichier trop volumineux", message: "L'image ne doit pas dépasser 10MB" },
+        { status: 400 }
+      );
+    }
 
     // Upload image to Vercel Blob Storage
     const timestamp = Date.now();
     const originalName = cover.name;
-    const extension = originalName.split('.').pop() || '';
-    const baseName = originalName.replace(/\.[^/.]+$/, "");
+    const extension = originalName.split('.').pop() || 'jpg';
+    const baseName = originalName.replace(/\.[^/.]+$/, "").replace(/[^a-zA-Z0-9-_]/g, '_');
     const uniqueFileName = `cars/${baseName}_${timestamp}.${extension}`;
 
     // Upload to Blob Storage
-    const blob = await putBlob(uniqueFileName, cover, {
-      access: 'public',
-    });
+    let blob;
+    try {
+      blob = await putBlob(uniqueFileName, cover, {
+        access: 'public',
+      });
+    } catch (blobError) {
+      console.error("Erreur lors de l'upload du blob:", blobError);
+      return Response.json(
+        { 
+          error: "Erreur d'upload", 
+          message: "Impossible d'uploader l'image. Vérifiez votre configuration Blob Storage." 
+        },
+        { status: 500 }
+      );
+    }
 
     // Save blob URL for database
     const coverUrl = blob.url;
+    
+    if (!coverUrl) {
+      return Response.json(
+        { error: "Erreur d'upload", message: "L'URL de l'image n'a pas été générée" },
+        { status: 500 }
+      );
+    }
 
     const newCar = await prisma.car.create({
       data: {
@@ -204,8 +315,17 @@ export async function POST(req: Request) {
   } catch (error: unknown) {
     console.error("Error creating car:", error);
     const message = error instanceof Error ? error.message : String(error);
+    
+    // Si l'erreur vient de Prisma, donner un message plus clair
+    if (message.includes('Unique constraint')) {
+      return Response.json(
+        { error: "Erreur de validation", message: "Une voiture avec ces caractéristiques existe déjà" },
+        { status: 400 }
+      );
+    }
+    
     return Response.json(
-      { error: "Failed to create car", details: message },
+      { error: "Erreur lors de la création", message: message },
       { status: 500 }
     );
   }

@@ -42,6 +42,15 @@ export default function AddForm() {
         return () => clearTimeout(timer);
     }, []);
 
+    // Nettoyer les URLs de preview pour éviter les fuites mémoire
+    useEffect(() => {
+        return () => {
+            if (preview) {
+                URL.revokeObjectURL(preview);
+            }
+        };
+    }, [preview]);
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!cover) return setMessage("Cover image is required");
@@ -265,8 +274,23 @@ export default function AddForm() {
           onChange={(e) => {
             const file = e.target.files?.[0];
             if (file) {
+              // Nettoyer l'ancienne preview
+              if (preview) {
+                URL.revokeObjectURL(preview);
+              }
+              // Vérifier que c'est une image
+              if (!file.type.startsWith('image/')) {
+                setMessage("Veuillez sélectionner un fichier image");
+                return;
+              }
+              // Vérifier la taille (max 10MB)
+              if (file.size > 10 * 1024 * 1024) {
+                setMessage("L'image ne doit pas dépasser 10MB");
+                return;
+              }
               setCover(file);
               setPreview(URL.createObjectURL(file)); // generate preview URL
+              setMessage(""); // Réinitialiser le message d'erreur
             }
           }}
           className={preview ? "mt-1 absolute w-full h-30 z-0" : "" }
