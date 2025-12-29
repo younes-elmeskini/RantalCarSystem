@@ -80,18 +80,15 @@ export default function EditCarForm() {
       console.log("No carId found");
       return;
     }
-
-    console.log("Fetching car with ID:", carId);
     setIsLoadingCar(true);
 
     fetch(`/api/cars/${carId}`)
       .then((res) => {
-        console.log("Response status:", res.status);
+
         if (!res.ok) throw new Error("Failed to fetch car");
         return res.json();
       })
       .then((responseData) => {
-        console.log("Car data received:", responseData);
 
         // L'API peut retourner soit un objet, soit un tableau
         const data: Car = Array.isArray(responseData)
@@ -102,7 +99,6 @@ export default function EditCarForm() {
           throw new Error("Aucune donnée de voiture trouvée");
         }
 
-        console.log("Processed car data:", data);
         setCar(data);
 
         // Mise à jour du formulaire avec les données de la voiture
@@ -120,7 +116,6 @@ export default function EditCarForm() {
           airConditioning: Boolean(data.airConditioning),
         };
 
-        console.log("Updated form:", updatedForm);
         setForm(updatedForm);
         setPreview(data.cover || "");
       })

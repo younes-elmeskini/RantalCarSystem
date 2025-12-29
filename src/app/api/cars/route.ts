@@ -1,7 +1,7 @@
 import prisma from "@/lib/prisma";
 import { cookies } from "next/headers";
 import jwt from "jsonwebtoken";
-import { put as putBlob, del as deleteBlob } from "@vercel/blob";
+import { put as putBlob } from "@vercel/blob";
 import {
   Brand,
   FuelType,
@@ -106,7 +106,6 @@ export async function GET(req: Request) {
       },
     });
 
-    console.log("cars", cars);
     return Response.json(cars);
   } catch (error: unknown) {
     console.error(error);

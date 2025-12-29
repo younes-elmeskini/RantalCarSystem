@@ -24,7 +24,7 @@ export default function HeroContact() {
               transition={{ duration: 0.6, delay: 0.7 }}
             >
               Nous sommes là pour vous aider avec tous vos besoins de location de voiture à Casablanca et au Maroc.
-              Contactez-nous pour plus d'informations ou de support.
+              Contactez-nous pour plus d&apos;informations ou de support.
             </motion.p>
           </SectionAnimation>
           <motion.div

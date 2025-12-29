@@ -21,7 +21,7 @@ export async function Verify() {
 
     console.log("userId", payload.userId);
     return payload; // Return payload so the caller can use it
-  } catch (err) {
+  } catch {
     throw new Error("Invalid token");
   }
 }
