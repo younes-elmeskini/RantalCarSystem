@@ -28,7 +28,8 @@ export default function infoBlock() {
             Availability
           </h3>
           <p className="text-[14px] md:text-[16px] text-black60">
-            Diam tincidunt tincidunt erat at semper fermentum. Id ultricies quis
+          Check real-time car availability and book instantly.
+          Flexible dates, transparent pricing, no surprises.
           </p>
         </motion.div>
       </StaggeredItem>
@@ -56,7 +57,8 @@ export default function infoBlock() {
             Comfort
           </h3>
           <p className="text-[14px] md:text-[16px] text-black60">
-            Gravida auctor fermentum morbi vulputate ac egestas orcietium convallis
+          Enjoy smooth, relaxing rides with well-maintained and fully equipped cars.
+          Every journey is designed for your comfort.
           </p>
         </motion.div>
       </StaggeredItem>
@@ -84,7 +86,8 @@ export default function infoBlock() {
             Savings
           </h3>
           <p className="text-[14px] md:text-[16px] text-black60">
-            Pretium convallis id diam sed commodo vestibulum lobortis volutpat
+          Get the best value for your money.
+          Affordable rates, transparent pricing, maximum savings.
           </p>
         </motion.div>
       </StaggeredItem>

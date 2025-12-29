@@ -9,7 +9,7 @@ export const sendWhatsAppMessage = (car: {
   fuelType: string;
   airConditioning: boolean;
 }) => {
-  const phoneNumber = "212708015107"; // Numéro WhatsApp sans le +
+  const phoneNumber = "21266047412"; // Numéro WhatsApp sans le +
   
   // Génération du message avec les informations de la voiture
   const message = `🚗 *Demande de location de véhicule*
@@ -41,7 +41,7 @@ Merci !`;
 
 // Fonction alternative pour envoyer un message simple
 export const sendSimpleWhatsAppMessage = (carName: string, carPrice: string) => {
-  const phoneNumber = "212708015107";
+  const phoneNumber = "21266047412";
   
   const message = `Bonjour ! Je suis intéressé(e) par la location de la ${carName} (${carPrice}/jour). Pouvez-vous me donner plus d'informations ?`;
   

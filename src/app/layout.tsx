@@ -20,7 +20,7 @@ export const metadata: Metadata = {
   title: "Location de voitures",
   description: "Location de voitures",
   icons: {
-    icon: "/images/logo.png", 
+    icon: "/images/icon.png", 
   },
 };
 

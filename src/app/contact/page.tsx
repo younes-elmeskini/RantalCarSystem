@@ -33,7 +33,7 @@ export default function ContactPage() {
 
 
     // Envoyer un message WhatsApp personnalisé
-    const phoneNumber = "212708015107";
+    const phoneNumber = "212660474127";
     const message = `📞 *Nouveau message de contact*
 
 *Nom :* ${formData.name}

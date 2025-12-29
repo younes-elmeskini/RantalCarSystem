@@ -13,11 +13,9 @@ const Footer: React.FC = () => {
               <Image 
                 src="/images/logo.png" 
                 alt="Logo" 
-                width={8}
+                width={100}
                 height={6}
-                className=" w-8 mr-3"
               />
-              <h3 className="text-xl font-bold text-white">AutoRent</h3>
             </div>
             <p className="text-white/80 mb-4 max-w-md">
               Votre partenaire de confiance pour la location de véhicules. 

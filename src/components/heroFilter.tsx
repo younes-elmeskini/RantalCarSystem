@@ -23,8 +23,8 @@ export default function heroFilter() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.7 }}
           >
-            Aliquam adipiscing velit semper morbi. Purus non eu cursus porttitor
-            tristique et gravida. Quis nunc interdum gravida ullamcorper
+            Discover reliable, comfortable cars designed to fit every journey.
+            From city drives to long trips, we make mobility simple and accessible.
           </motion.p>
           <motion.button
             className="px-4 py-2 md:px-6 md:py-3 bg-[#FF9E0C] text-white rounded-[12px] hover:bg-[#7c5dfa] transition-colors duration-300"

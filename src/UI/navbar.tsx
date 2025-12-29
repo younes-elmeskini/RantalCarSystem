@@ -37,7 +37,7 @@ export default function Navbar() {
       <div className="text-interface flex justify-between py-4 md:px-[80px] px-4 items-center relative">
         <div className="flex items-center gap-2">
           <Image src="/images/logo.png" alt="Logo" width={22} height={25} />
-          <h2>LOGO</h2>
+          <h2>ECO DIDA</h2>
         </div>
         <div className="flex gap-4">
           <div className="h-4 w-16 bg-gray-200 rounded animate-pulse"></div>
@@ -69,8 +69,7 @@ export default function Navbar() {
         transition={{ duration: 0.2 }}
         className="flex items-center gap-2"
       >
-        <Image src="/images/logo.png" alt="Logo" width={22} height={25} />
-        <h2>LOGO</h2>
+        <Image src="/images/logo.png" alt="Logo" width={122} height={25} className="w-[100px] md:w-[120px]" />
       </motion.div>
 
       <motion.button

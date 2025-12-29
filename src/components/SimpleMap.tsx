@@ -5,7 +5,21 @@ interface SimpleMapProps {
   className?: string;
 }
 
+// Coordonnées GPS de Casablanca, Maroc
+const LOCATION_COORDS = {
+  lat: 33.570229,
+  lng: -7.621388,
+  address: "Casablanca, Maroc"
+};
+
+// URL Google Maps
+const getGoogleMapsUrl = (lat: number, lng: number) => {
+  return `https://www.google.com/maps?q=${lat},${lng}`;
+};
+
 export default function SimpleMap({ className = "" }: SimpleMapProps) {
+  const googleMapsUrl = getGoogleMapsUrl(LOCATION_COORDS.lat, LOCATION_COORDS.lng);
+
   return (
     <motion.div 
       className={`bg-gradient-to-br from-blue-100 to-blue-200 rounded-2xl overflow-hidden relative ${className}`}
@@ -16,24 +30,38 @@ export default function SimpleMap({ className = "" }: SimpleMapProps) {
     >
       {/* Carte simulée avec des éléments visuels */}
       <div className="relative w-full h-full min-h-[400px] p-8">
-        {/* Titre de la carte */}
+        {/* Titre de la carte - Cliquable */}
         <div className="absolute top-4 left-4 z-10">
-          <div className="bg-white rounded-lg px-3 py-2 shadow-md">
-            <h4 className="font-semibold text-gray-800 text-sm">Casablanca, Maroc</h4>
-          </div>
+          <motion.a
+            href={googleMapsUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="block bg-white rounded-lg px-3 py-2 shadow-md cursor-pointer hover:shadow-lg transition-shadow duration-200"
+          >
+            <h4 className="font-semibold text-gray-800 text-sm hover:text-blue-600 transition-colors duration-200">
+              📍 Casablanca, Maroc
+            </h4>
+          </motion.a>
         </div>
 
-        {/* Marqueur de localisation */}
+        {/* Marqueur de localisation - Cliquable */}
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20">
-          <motion.div
+          <motion.a
+            href={googleMapsUrl}
+            target="_blank"
+            rel="noopener noreferrer"
             initial={{ scale: 0 }}
             whileInView={{ scale: 1 }}
             transition={{ duration: 0.5, delay: 0.3 }}
             viewport={{ once: true }}
-            className="relative"
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+            className="relative cursor-pointer"
           >
             {/* Icône de localisation */}
-            <div className="bg-red-500 text-white rounded-full w-12 h-12 flex items-center justify-center shadow-lg">
+            <div className="bg-red-500 text-white rounded-full w-12 h-12 flex items-center justify-center shadow-lg hover:bg-red-600 transition-colors duration-200">
               <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
               </svg>
@@ -41,11 +69,11 @@ export default function SimpleMap({ className = "" }: SimpleMapProps) {
             
             {/* Animation de pulsation */}
             <motion.div
-              className="absolute inset-0 bg-red-400 rounded-full opacity-30"
+              className="absolute inset-0 bg-red-400 rounded-full opacity-30 pointer-events-none"
               animate={{ scale: [1, 1.5, 1], opacity: [0.3, 0, 0.3] }}
               transition={{ duration: 2, repeat: Infinity }}
             />
-          </motion.div>
+          </motion.a>
         </div>
 
         {/* Éléments décoratifs pour simuler une carte */}
@@ -113,37 +141,45 @@ export default function SimpleMap({ className = "" }: SimpleMapProps) {
           </svg>
         </div>
 
-        {/* Bouton d'action */}
+        {/* Bouton d'action - Cliquable */}
         <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2">
-          <motion.button
+          <motion.a
+            href={googleMapsUrl}
+            target="_blank"
+            rel="noopener noreferrer"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 1.5 }}
             viewport={{ once: true }}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            className="bg-blue-600 text-white px-4 py-2 rounded-lg shadow-lg hover:bg-blue-700 transition-colors duration-200 flex items-center gap-2"
+            className="bg-blue-600 text-white px-4 py-2 rounded-lg shadow-lg hover:bg-blue-700 transition-colors duration-200 flex items-center gap-2 cursor-pointer"
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
             </svg>
             Voir sur Google Maps
-          </motion.button>
+          </motion.a>
         </div>
 
-        {/* Informations de localisation */}
+        {/* Informations de localisation - Cliquable */}
         <div className="absolute top-4 right-4 z-10">
-          <motion.div
+          <motion.a
+            href={googleMapsUrl}
+            target="_blank"
+            rel="noopener noreferrer"
             initial={{ opacity: 0, x: 20 }}
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5, delay: 1.7 }}
             viewport={{ once: true }}
-            className="bg-white/90 rounded-lg px-3 py-2 shadow-md"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="block bg-white/90 rounded-lg px-3 py-2 shadow-md cursor-pointer hover:bg-white hover:shadow-lg transition-all duration-200"
           >
-            <div className="text-xs text-gray-600">
-              <p>📍 33.5731° N, 7.5898° W</p>
+            <div className="text-xs text-gray-600 hover:text-blue-600 transition-colors duration-200">
+              <p>📍 {LOCATION_COORDS.lat}° N, {Math.abs(LOCATION_COORDS.lng)}° W</p>
             </div>
-          </motion.div>
+          </motion.a>
         </div>
       </div>
     </motion.div>

@@ -70,7 +70,7 @@ export default function CarDetais({ car }: CarDetaisProps) {
             alt="cars"
             width={600}
             height={260}
-            className="rounded-[20px] mt-4 w-full w-[600px] h-auto object-cover shadow-lg"
+            className="rounded-[20px] mt-4 w-full  h-auto object-cover shadow-lg"
           />
         </motion.div>
       </motion.div>
