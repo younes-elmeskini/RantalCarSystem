@@ -55,7 +55,7 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: "/images/Hero.png",
+        url: "/images/logo.png",
         width: 1200,
         height: 630,
         alt: "Eco Dida Car - Location de voitures Casablanca Maroc",
