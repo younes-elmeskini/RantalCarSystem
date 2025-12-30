@@ -59,8 +59,8 @@ export default function CarCard(car: Car) {
           <p>{car.type}</p>
         </div>
         <div className="text-right">
+          <span>Apartir de</span>
           <p className="md:text-[24px] text-[#5937E0] font-bold">{car.price} MAD</p>
-          <span>/day</span>
         </div>
       </motion.div>
       <motion.div 
