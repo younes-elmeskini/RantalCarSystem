@@ -6,16 +6,11 @@ import Link from "next/link";
 import { useState } from "react";
 import { Navlinks } from "@/lib/constantes";
 import { useAuth } from "@/lib/hooks/useAuth";
-import { usePathname } from "next/navigation";
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
   const { isAuthenticated, isLoading } = useAuth();
-  const pathname = usePathname();
 
-  // Pages où la navbar ne doit pas être affichée
-  const hideNavbarPages = ['/auth/login', '/auth/register'];
-  const shouldHideNavbar = hideNavbarPages.includes(pathname);
 
   // Calculer les liens à afficher AVANT les return conditionnels
   const linksToRender = React.useMemo(
@@ -23,21 +18,12 @@ export default function Navbar() {
     [isAuthenticated]
   );
 
-  // Debug temporaire
-  console.log("Navbar - isAuthenticated:", isAuthenticated, "isLoading:", isLoading);
-
-  // Si on doit cacher la navbar, ne rien afficher
-  if (shouldHideNavbar) {
-    return null;
-  }
-
   // Si on charge encore l'état d'authentification, afficher une navbar basique
   if (isLoading) {
     return (
       <div className="text-interface flex justify-between py-4 md:px-[80px] px-4 items-center relative">
         <div className="flex items-center gap-2">
           <Image src="/images/logo.png" alt="Logo" width={22} height={25} />
-          <h2>ECO DIDA</h2>
         </div>
         <div className="flex gap-4">
           <div className="h-4 w-16 bg-gray-200 rounded animate-pulse"></div>

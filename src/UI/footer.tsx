@@ -15,6 +15,7 @@ const Footer: React.FC = () => {
                 alt="Logo" 
                 width={100}
                 height={6}
+                className="filter brightness-0 invert"
               />
             </div>
             <p className="text-white/80 mb-4 max-w-md">

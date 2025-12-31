@@ -1,18 +1,18 @@
 export const team = [
   {
-    name: "Ahmed Benali",
+    name: "Doha Wahaib",
     role: "Directeur Général",
     image: "/images/team1.jpg",
-    description: "15 ans d'expérience dans l'industrie automobile"
+    description: "Expérimentée dans la location de voitures"
   },
   {
-    name: "Fatima Zahra",
+    name: "Amer Mohamed Fahd",
     role: "Responsable Commercial",
     image: "/images/team2.jpg",
     description: "Spécialiste en service client et satisfaction"
   },
   {
-    name: "Youssef Alami",
+    name: "Amine Nemrany",
     role: "Responsable Technique",
     image: "/images/team3.jpg",
     description: "Expert en maintenance et sécurité automobile"

@@ -4,6 +4,7 @@ import CarCard from "@/components/carCard";
 import { CarCardSkeleton } from "@/components/skeletonLoader";
 import { motion } from "framer-motion";
 import { useCarContext } from "@/lib/hooks/useCarContext";
+import EmptyState from "@/components/EmptyState";
 
 // Define the props for the component
 interface MenuCarsProps {
@@ -59,9 +60,27 @@ export default function MenuCars({ filter, excludeId, limit }: MenuCarsProps) {
     ? cars.filter((car) => car.id !== excludeId)
     : cars;
 
+  // Afficher l'état vide si aucune voiture n'est trouvée
+  if (filteredCars.length === 0) {
+    return (
+      <div className="w-full">
+        <EmptyState
+          title="Aucune voiture trouvée"
+          message={
+            excludeId
+              ? "Il n'y a pas d'autres voitures de ce type disponibles pour le moment."
+              : "Aucune voiture ne correspond à vos critères de recherche. Essayez de modifier vos filtres ou consultez toutes nos voitures disponibles."
+          }
+          showResetButton={!excludeId}
+          resetButtonText="Voir toutes les voitures"
+          resetButtonHref="/cars"
+        />
+      </div>
+    );
+  }
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 lg:gap-8 gap-6 my-6">
-      {filteredCars.length === 0 && <p className="text-center">Aucune voiture disponible.</p>}
       {filteredCars.map((car, index) => (
         <motion.div
           key={car.id}
