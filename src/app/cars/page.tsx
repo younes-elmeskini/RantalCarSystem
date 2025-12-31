@@ -43,15 +43,22 @@ function CarsPageContent() {
   }
 
   return (
-    <div className="flex flex-col justify-center items-center">
-      <motion.h2 
-        className="text-[24px] font-bold md:my-4 text-center"
-        initial={{ opacity: 0, y: -20 }}
+    <div className="flex flex-col justify-center items-center min-h-screen bg-gray-50 py-8">
+      <motion.div
+        className="w-full max-w-7xl mx-auto px-4"
+        initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
       >
-        Sélectionnez un groupe de véhicules
-      </motion.h2>
+        <motion.h2 
+          className="text-xl md:text-3xl font-bold mb-2 text-center text-gray-900"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.1 }}
+        >
+          Trouvez la voiture parfaite
+        </motion.h2>
+        
         <FilterType
           selectedGamme={gamme}
           selectedType={type}
@@ -64,7 +71,10 @@ function CarsPageContent() {
           onChangeFuelType={setFuelType}
           onChangeTransmission={setTransmission}
         />
+      </motion.div>
+      
       <motion.div
+        className="w-full max-w-7xl mx-auto px-4"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1, delay: 0.4 }}
