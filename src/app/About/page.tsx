@@ -48,19 +48,19 @@ export default function AboutPage() {
 
   const team = [
     {
-      name: "Ahmed Benali",
+      name: "Doha Wahaib",
       role: "Directeur Général",
       image: "/images/team1.jpg",
-      description: "15 ans d'expérience dans l'industrie automobile"
+      description: "Expérimentée dans la location de voitures"
     },
     {
-      name: "Fatima Zahra",
+      name: "Amer Mohamed Fahd",
       role: "Responsable Commercial",
       image: "/images/team2.jpg",
       description: "Spécialiste en service client et satisfaction"
     },
     {
-      name: "Youssef Alami",
+      name: "Amine Nemrany",
       role: "Responsable Technique",
       image: "/images/team3.jpg",
       description: "Expert en maintenance et sécurité automobile"
@@ -290,7 +290,7 @@ export default function AboutPage() {
                     </div>
                     <div>
                       <h4 className="font-semibold text-gray-900">Adresse</h4>
-                      <p className="text-gray-600">Boulevard Mohammed V, Casablanca 20000, Maroc</p>
+                      <p className="text-gray-600">2 Mars, Casablanca 20000, Maroc</p>
                     </div>
                   </div>
 
