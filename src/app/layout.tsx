@@ -106,16 +106,17 @@ function getStructuredData() {
       "latitude": "33.570229",
       "longitude": "-7.621388"
     },
-    "telephone": "+212 708 015 107",
-    "email": "contact@ecodidacar.ma",
+    "telephone": "+212 701 041 884/+212 660 474 127",
+    "email": "ecodidacar@gmail.com",
     "priceRange": "$$",
     "areaServed": {
       "@type": "Country",
       "name": "Maroc"
     },
     "sameAs": [
-      "https://www.facebook.com/ecodidacar",
-      "https://www.instagram.com/ecodidacar"
+      "https://www.facebook.com/Eco-Dida-Car-100078034831209",
+      "https://www.instagram.com/eco_dida_car?igsh=d3lxMHVlczg3aG03",
+      "https://www.tiktok.com/@ecodiidacar"
     ]
   };
 }

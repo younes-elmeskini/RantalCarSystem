@@ -61,7 +61,7 @@ export default function WhatsAppNotification({
             <div className="flex-1">
               <h4 className="font-semibold text-sm">Message WhatsApp envoyé !</h4>
               <p className="text-xs opacity-90">
-                Demande de location pour {carName} envoyée au +212 708 015 107
+                Demande de location pour {carName} envoyée au +212 660 474 127
               </p>
             </div>
             <button
