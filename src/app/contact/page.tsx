@@ -251,7 +251,7 @@ Message envoyé depuis le site web de location de voitures.`;
                   </div>
                   <div>
                     <h4 className="font-semibold text-gray-900">Téléphone</h4>
-                    <p className="text-gray-600">+212 701 041 884/+212 660 474 127</p>
+                    <p className="text-gray-600">+212 660 474 127</p>
                     <p className="text-sm text-gray-500">Disponible 24h/24, 7j/7</p>
                   </div>
                 </motion.div>
@@ -269,7 +269,7 @@ Message envoyé depuis le site web de location de voitures.`;
                   </div>
                   <div>
                     <h4 className="font-semibold text-gray-900">WhatsApp</h4>
-                    <p className="text-gray-600">+212 660 474 127/+212 701 041 884</p>
+                    <p className="text-gray-600">+212 660 474 127</p>
                     <p className="text-sm text-gray-500">Réponse rapide garantie</p>
                   </div>
                 </motion.div>

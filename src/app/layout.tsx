@@ -106,7 +106,7 @@ function getStructuredData() {
       "latitude": "33.570229",
       "longitude": "-7.621388"
     },
-    "telephone": "+212 701 041 884/+212 660 474 127",
+    "telephone": "+212 660 474 127",
     "email": "ecodidacar@gmail.com",
     "priceRange": "$$",
     "areaServed": {
